@@ -1,0 +1,4795 @@
+{
+	"info": {
+		"_postman_id": "96c0ad9f-9649-4705-97a5-f23f94e3a304",
+		"name": "Naandi_3.1.1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create_JWT",
+			"item": [
+				{
+					"name": "JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "201d03b2-2f17-4e0f-9100-4bc7c71770bf",
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"   let responseheaders=pm.response.headers.get('JWT');\r",
+									"   console.log(responseheaders);\r",
+									"   pm.environment.set(\"token\",responseheaders);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"demouser.eighteen\",\r\n\"passwordType\": \"text\",\r\n\"password\": \"demouser.eighteen\"\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/CommonLogin/ValidatePasswordV3/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"CommonLogin",
+								"ValidatePasswordV3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LandingPage",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a4083d10-1f88-4caa-bd75-b58f8e6da919",
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"   let responseheaders=pm.response.headers.get('JWT');\r",
+									"   console.log(responseheaders);\r",
+									"   pm.environment.set(\"token\",responseheaders);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"token\":  \"{{token}}\",\r\n\"productSelection\": \"MS1\",\r\n\"platform\": \"mobile\"\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/CommonLogin/GetLandingPageV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"CommonLogin",
+								"GetLandingPageV3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ScreeningTest",
+			"item": [
+				{
+					"name": "ScreeningTest_Valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c60b39c3-6234-47bf-ac3e-2ff9e2a1d594",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"  pm.expect(jsonData.resultCode).to.eql(\"C001\");",
+									"  pm.expect(jsonData.resultMessage).to.eql(\"success\");",
+									"  pm.expect(jsonData.screeningData.pedagogyType).to.eql(\"screeningTest\");",
+									"  //pm.expect(jsonData.screeningData.pedagogyStatus).to.eql(\"New\");",
+									"  pm.expect(jsonData.screeningTestFlag).to.eql(true);",
+									"});",
+									"",
+									"var pedagogyID = jsonData.levelTestData.pedagogyID",
+									"var mode = jsonData.levelTestData.mode",
+									"",
+									"",
+									"pm.environment.set(\"pedagogyID\", pedagogyID);",
+									"",
+									"pm.environment.set(\"mode\", mode);",
+									"",
+									"console.log(pedagogyID);",
+									"console.log(mode);",
+									"console.log(jsonData);",
+									"",
+									"//Schema Validation",
+									"var schema = {",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"    \"resultCode\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"resultMessage\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"screeningData\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"pedagogyID\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"pedagogyType\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"testAttempts\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"pedagogyStatus\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"mode\": {",
+									"          \"type\": \"string\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"pedagogyID\",",
+									"        \"pedagogyType\",",
+									"        \"testAttempts\",",
+									"        \"pedagogyStatus\",",
+									"        \"mode\"",
+									"      ]",
+									"    },",
+									"    \"screeningTestFlag\": {",
+									"      \"type\": \"boolean\"",
+									"    },",
+									"    \"levelTestData\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"pedagogyID\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"pedagogyType\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"testAttempts\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"pedagogyStatus\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"mode\": {",
+									"          \"type\": \"string\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"pedagogyID\",",
+									"        \"pedagogyType\",",
+									"        \"testAttempts\",",
+									"        \"pedagogyStatus\",",
+									"        \"mode\"",
+									"      ]",
+									"    },",
+									"    \"levelTestFlag\": {",
+									"      \"type\": \"boolean\"",
+									"    }",
+									"  },",
+									"  \"required\": [",
+									"    \"resultCode\",",
+									"    \"resultMessage\",",
+									"    \"screeningData\",",
+									"    \"screeningTestFlag\",",
+									"    \"levelTestData\",",
+									"    \"levelTestFlag\"",
+									"  ]",
+									"};",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"  pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "96cd078f-b7c6-431c-b638-08ce5104465c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "jwt",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/CheckScreeningTestStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"CheckScreeningTestStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ScreeningTest_Blank JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "731d0dc5-b067-4763-a827-7292929c2d56",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/CheckScreeningTestStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"CheckScreeningTestStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ScreeningTest_Invalid JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a1c906a-5547-4fe7-b36a-123caf6cb187",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/CheckScreeningTestStatus",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"CheckScreeningTestStatus"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ActivateLevelTest",
+			"item": [
+				{
+					"name": "ActivateLevelTest -Valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "db91c0d0-bd46-47e2-909b-087f82158874",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"I020\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Level test cannot be activated before 60 days of previous level test\");\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "jwt",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee62ea17710e00c70003222\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2020-09-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Invalid_pass past date",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2b10163b-b2ca-40c6-acfc-1d5b93bb3765",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"I016\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Validation error\");\r",
+									"    pm.expect(jsonData.errors[0]).to.eql(\"Start date cannot be past date\")\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2018-08-25\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Invalid_DateFormat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3c73962e-b9ba-481e-aa2b-6cde22d120c4",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");\r",
+									"    pm.expect(jsonData.data.startDate).to.eql(\"Please enter a valid date.\")\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2020-25-08\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Invalid_Date",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "16a36e57-597a-47d4-89f5-755e8636ff3a",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");\r",
+									"    pm.expect(jsonData.data.startDate).to.eql(\"Please enter a valid date.\")\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2021-30-02\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Blank startDate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "51ae514a-7ade-468f-b31c-7ccf5132e91e",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");\r",
+									"    pm.expect(jsonData.data.startDate).to.eql(\"This field should not be empty.\")\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"\",\r\n    \"endDate\" : \"2020-30-09\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Blank language",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9ba95da3-a41a-4595-b283-d347c98f6fcc",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");\r",
+									"    pm.expect(jsonData.data.subject).to.eql(\"This field should not be empty.\")\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2020-08-31\",\r\n    \"endDate\" : \"2020-09-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Invalid Language",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5a207f44-0a90-40eb-9a2a-5919623d46d8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"I016\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Validation error\");\r",
+									"    pm.expect(jsonData.errors[0]).to.eql(\"Please provide valid subject\")\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"dkjfbnd\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2020-08-31\",\r\n    \"endDate\" : \"2020-09-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Wrong Subject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "009c3b1f-2d04-4bf4-845e-85b4abf5d314",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"I016\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Validation error\");\r",
+									"    pm.expect(jsonData.errors[0]).to.eql(\"LevelTest ID does not match with subject\")\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"Math\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2020-08-31\",\r\n    \"endDate\" : \"2020-09-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_invalid LevelTestID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a3f826de-2cfc-4c78-8655-9c8cbcee96b6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"I016\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Validation error\");\r",
+									"    pm.expect(jsonData.errors[0]).to.eql(\"Please provide valid levelTest ID\")\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"5f36f327213a0@#$5b000d33\",\r\n    \"startDate\": \"2020-08-31\",\r\n    \"endDate\" : \"2020-09-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Blank LevelTestID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7fec22db-83c5-4359-af81-69f5afb25fc2",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");\r",
+									"    pm.expect(jsonData.data.levelTestID).to.eql(\"This field should not be empty.\")\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"\",\r\n    \"startDate\": \"2020-08-31\",\r\n    \"endDate\" : \"2020-09-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Invalid OrgID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f9e4ab4f-243b-475c-8c7d-97d2339eb990",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"I006\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Organization details not found\");\r",
+									"    pm.expect(jsonData.data.orgNotFound[0]).to.eql(\"5ee85bfa7710e@#844001217\")\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e@#844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2020-08-31\",\r\n    \"endDate\" : \"2020-09-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Blank orgID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e3a3bd8f-93b5-4983-b3da-67386f01248d",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");\r",
+									"    pm.expect(jsonData.data.orgIDs).to.eql(\"This field should not be empty.\")\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2020-08-25\",\r\n    \"endDate\" : \"2020-09-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Invalid JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cf934f1a-0bc6-4d0c-9cdf-0fd640425b80",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");\r",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "jakfnekjfne"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2020-08-25\",\r\n    \"endDate\" : \"2020-09-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLevelTest_Blank JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1be85a2c-a3e4-4cbc-8bba-e64fd41e88c8",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");\r",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"orgIDs\": [\"5ee85bfa7710e03844001217\",\"5ee762c57710e044d4000f2d\"],\r\n\t\"subject\": \"English\",\r\n    \"levelTestID\": \"5f36f327213a00005b000d33\",\r\n    \"startDate\": \"2020-08-25\",\r\n    \"endDate\" : \"2020-09-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Internal/ActivateLevelTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Internal",
+								"ActivateLevelTest"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "OpenScreeningTest",
+			"item": [
+				{
+					"name": "OpenScreeningTest Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "99779c00-f668-4cc6-a697-cc8bdb1b8774",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C004\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"redirect\");",
+									"    });",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"{{pedagogyID}}\",\r\n    \"mode\": \"{{mode}}\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/OpenScreeningTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"OpenScreeningTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OpenScreeningTest Blank screeningTestID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "53dd4478-b2bc-4b15-8b7f-c5d0244a022e",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.data.screeningTestID).to.eql(\"This field should not be empty.\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");",
+									"    });",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"\",\r\n    \"mode\": \"{{pedagogyID}}\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/OpenScreeningTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"OpenScreeningTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OpenScreeningTest Blank mode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe38263d-151e-4691-911a-c6b5892036b4",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.data.mode).to.eql(\"This field should not be empty.\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");",
+									"    });",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"{{pedagogyID}}\",\r\n    \"mode\": \"\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/OpenScreeningTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"OpenScreeningTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OpenScreeningTest Invalid mode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7ace979d-dea2-4b4c-8d7a-ed2f4c0d29f8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.error[0]).to.eql(\"User or pedagogy details not found\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C004\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"redirect\");",
+									"    });",
+									"    ",
+									"    console.log(jsonData);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"5e70b798b1f71b19f0003061\",\r\n    \"mode\": \"kdhb54\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/OpenScreeningTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"OpenScreeningTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OpenScreeningTest Invalid screeningTestID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1578bd52-d5bf-4f9f-b536-b6cabaf142a3",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.error[0]).to.eql(\"User or pedagogy details not found\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C004\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"redirect\");",
+									"    });",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"sjfh&^%54\",\r\n    \"mode\": \"{{mode}}\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/OpenScreeningTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"OpenScreeningTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OpenScreeningTest Blank JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1246ef0f-369f-4d82-8ea5-30d48da41704",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"sjfh&^%54\",\r\n    \"mode\": \"Test\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/OpenScreeningTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"OpenScreeningTest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OpenScreeningTest Invalid JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d0d8c9da-ae52-4c40-a66c-cf8ad4e7a0ab",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "sjs&^%902445"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"sjfh&^%54\",\r\n    \"mode\": \"Test\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/OpenScreeningTest",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"OpenScreeningTest"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "FetchFirstContent",
+			"item": [
+				{
+					"name": "FetchFirstContent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a400f37f-7451-42cd-8ce9-9f5a88a33cef",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C001\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"success\");",
+									"    pm.expect(jsonData.contentHeaderInfo.pedagogyType).to.eql(\"levelTest\");",
+									"    pm.expect(jsonData.contentHeaderInfo.pedagogyStatus).to.eql(\"in-progress\");",
+									"    });",
+									"    ",
+									"var contentVersionID = jsonData.contentData.data[0]._id;",
+									"",
+									"var langCode = jsonData.contentData.data[0].langCode;",
+									"",
+									"var contentId = jsonData.contentData.data[0].contentID;",
+									"",
+									"var questionType = jsonData.contentData.data[0].template;",
+									"",
+									"var contentSeqNum = jsonData.contentData.contentSeqNum;",
+									"",
+									"var nextContentSeqNum = contentSeqNum + 1;",
+									"",
+									"pm.environment.set(\"contentVersionID\", contentVersionID);",
+									"",
+									"pm.environment.set(\"langCode\", langCode);",
+									"",
+									"pm.environment.set(\"contentId\", contentId);",
+									"",
+									"pm.environment.set(\"contentSeqNum\", contentSeqNum);",
+									"",
+									"pm.environment.set(\"nextContentSeqNum\", nextContentSeqNum);",
+									"",
+									"pm.environment.set(\"questionType\", questionType);",
+									"",
+									"console.log(contentVersionID);",
+									"console.log(langCode);",
+									"console.log(contentId);",
+									"console.log(contentSeqNum);",
+									"console.log(nextContentSeqNum);",
+									"console.log(questionType);",
+									"",
+									"",
+									"//Schema Validation",
+									"/*",
+									"const schema = {",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"    \"resultCode\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"resultMessage\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"sessionInformation\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"sessionID\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"sessionStartAt\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"sessionType\": {",
+									"          \"type\": \"string\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"sessionID\",",
+									"        \"sessionStartAt\",",
+									"        \"sessionType\"",
+									"      ]",
+									"    },",
+									"    \"passwordTypeChanged\": {",
+									"      \"type\": \"boolean\"",
+									"    },",
+									"    \"userInformation\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"name\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"avatar\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"section\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"grade\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"gender\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"language\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"isRetail\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"selectedTheme\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"groupID\": {",
+									"          \"type\": \"string\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"name\",",
+									"        \"avatar\",",
+									"        \"section\",",
+									"        \"grade\",",
+									"        \"gender\",",
+									"        \"language\",",
+									"        \"isRetail\",",
+									"        \"selectedTheme\",",
+									"        \"groupID\"",
+									"      ]",
+									"    },",
+									"    \"redirectionData\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"endTopicFlag\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"endTopicHigherLevel\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"userTriggered\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"sessionTimeExceededFlag\": {",
+									"          \"type\": \"boolean\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"endTopicFlag\",",
+									"        \"endTopicHigherLevel\",",
+									"        \"userTriggered\",",
+									"        \"sessionTimeExceededFlag\"",
+									"      ]",
+									"    },",
+									"    \"redirectionCode\": {",
+									"      \"type\": \"null\"",
+									"    },",
+									"    \"contentHeaderInfo\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"pedagogyID\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"pedagogyType\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"pedagogyStatus\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"pedagogyProgress\": {",
+									"          \"type\": \"object\",",
+									"          \"properties\": {",
+									"            \"currentUnitNum\": {",
+									"              \"type\": \"integer\"",
+									"            },",
+									"            \"totalUnits\": {",
+									"              \"type\": \"integer\"",
+									"            },",
+									"            \"unitList\": {",
+									"              \"type\": \"array\",",
+									"              \"items\": [",
+									"                {",
+									"                  \"type\": \"object\",",
+									"                  \"properties\": {",
+									"                    \"unitID\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitName\": {",
+									"                      \"type\": \"null\"",
+									"                    },",
+									"                    \"unitType\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitStatus\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitSequenceNo\": {",
+									"                      \"type\": \"integer\"",
+									"                    }",
+									"                  },",
+									"                  \"required\": [",
+									"                    \"unitID\",",
+									"                    \"unitName\",",
+									"                    \"unitType\",",
+									"                    \"unitStatus\",",
+									"                    \"unitSequenceNo\"",
+									"                  ]",
+									"                },",
+									"                {",
+									"                  \"type\": \"object\",",
+									"                  \"properties\": {",
+									"                    \"unitID\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitName\": {",
+									"                      \"type\": \"null\"",
+									"                    },",
+									"                    \"unitType\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitStatus\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitSequenceNo\": {",
+									"                      \"type\": \"integer\"",
+									"                    }",
+									"                  },",
+									"                  \"required\": [",
+									"                    \"unitID\",",
+									"                    \"unitName\",",
+									"                    \"unitType\",",
+									"                    \"unitStatus\",",
+									"                    \"unitSequenceNo\"",
+									"                  ]",
+									"                }",
+									"              ]",
+									"            }",
+									"          },",
+									"          \"required\": [",
+									"            \"currentUnitNum\",",
+									"            \"totalUnits\",",
+									"            \"unitList\"",
+									"          ]",
+									"        },",
+									"        \"pedagogyMessages\": {",
+									"          \"type\": \"array\",",
+									"          \"items\": {}",
+									"        },",
+									"        \"rewardInfo\": {",
+									"          \"type\": \"object\",",
+									"          \"properties\": {",
+									"            \"sparkie\": {",
+									"              \"type\": \"integer\"",
+									"            }",
+									"          },",
+									"          \"required\": [",
+									"            \"sparkie\"",
+									"          ]",
+									"        },",
+									"        \"pedagogyChild\": {",
+									"          \"type\": \"object\",",
+									"          \"properties\": {",
+									"            \"name\": {",
+									"              \"type\": \"null\"",
+									"            }",
+									"          },",
+									"          \"required\": [",
+									"            \"name\"",
+									"          ]",
+									"        },",
+									"        \"pedagogyName\": {",
+									"          \"type\": \"null\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"pedagogyID\",",
+									"        \"pedagogyType\",",
+									"        \"pedagogyStatus\",",
+									"        \"pedagogyProgress\",",
+									"        \"pedagogyMessages\",",
+									"        \"rewardInfo\",",
+									"        \"pedagogyChild\",",
+									"        \"pedagogyName\"",
+									"      ]",
+									"    },",
+									"    \"contentData\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"contentId\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"contentType\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"contentMode\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"contentSubMode\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"contentSeqNum\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"contentParams\": {",
+									"          \"type\": \"object\",",
+									"          \"properties\": {",
+									"            \"userAttemptData\": {",
+									"              \"type\": \"array\",",
+									"              \"items\": {}",
+									"            }",
+									"          },",
+									"          \"required\": [",
+									"            \"userAttemptData\"",
+									"          ]",
+									"        },",
+									"        \"skipQuestion\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"data\": {",
+									"          \"type\": \"array\",",
+									"          \"items\": [",
+									"            {",
+									"              \"type\": \"object\",",
+									"              \"properties\": {",
+									"                \"_id\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"langCode\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"questionBody\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"quesVoiceover\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"response\": {",
+									"                  \"type\": \"object\",",
+									"                  \"properties\": {",
+									"                    \"blank_1\": {",
+									"                      \"type\": \"object\",",
+									"                      \"properties\": {",
+									"                        \"type\": {",
+									"                          \"type\": \"string\"",
+									"                        },",
+									"                        \"score\": {",
+									"                          \"type\": \"integer\"",
+									"                        },",
+									"                        \"correctAnswers\": {",
+									"                          \"type\": \"string\"",
+									"                        },",
+									"                        \"attributes\": {",
+									"                          \"type\": \"object\",",
+									"                          \"properties\": {",
+									"                            \"size\": {",
+									"                              \"type\": \"string\"",
+									"                            }",
+									"                          },",
+									"                          \"required\": [",
+									"                            \"size\"",
+									"                          ]",
+									"                        }",
+									"                      },",
+									"                      \"required\": [",
+									"                        \"type\",",
+									"                        \"score\",",
+									"                        \"correctAnswers\",",
+									"                        \"attributes\"",
+									"                      ]",
+									"                    }",
+									"                  },",
+									"                  \"required\": [",
+									"                    \"blank_1\"",
+									"                  ]",
+									"                },",
+									"                \"explanation\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"tags\": {",
+									"                  \"type\": \"array\",",
+									"                  \"items\": {}",
+									"                },",
+									"                \"revisionNo\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"isDynamic\": {",
+									"                  \"type\": \"boolean\"",
+									"                },",
+									"                \"contentID\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"template\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"templateFile\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"trials\": {",
+									"                  \"type\": \"integer\"",
+									"                },",
+									"                \"createdAt\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"updatedAt\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"showEditorTool\": {",
+									"                  \"type\": \"integer\"",
+									"                },",
+									"                \"type\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"encrypted\": {",
+									"                  \"type\": \"boolean\"",
+									"                },",
+									"                \"attributes\": {",
+									"                  \"type\": \"array\",",
+									"                  \"items\": {}",
+									"                },",
+									"                \"contentType\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"conditions\": {",
+									"                  \"type\": \"array\",",
+									"                  \"items\": {}",
+									"                }",
+									"              },",
+									"              \"required\": [",
+									"                \"_id\",",
+									"                \"langCode\",",
+									"                \"questionBody\",",
+									"                \"quesVoiceover\",",
+									"                \"response\",",
+									"                \"explanation\",",
+									"                \"tags\",",
+									"                \"revisionNo\",",
+									"                \"isDynamic\",",
+									"                \"contentID\",",
+									"                \"template\",",
+									"                \"templateFile\",",
+									"                \"trials\",",
+									"                \"createdAt\",",
+									"                \"updatedAt\",",
+									"                \"showEditorTool\",",
+									"                \"type\",",
+									"                \"encrypted\",",
+									"                \"attributes\",",
+									"                \"contentType\",",
+									"                \"conditions\"",
+									"              ]",
+									"            }",
+									"          ]",
+									"        },",
+									"        \"contentTranslationFlag\": {",
+									"          \"type\": \"boolean\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"contentId\",",
+									"        \"contentType\",",
+									"        \"contentMode\",",
+									"        \"contentSubMode\",",
+									"        \"contentSeqNum\",",
+									"        \"contentParams\",",
+									"        \"skipQuestion\",",
+									"        \"data\",",
+									"        \"contentTranslationFlag\"",
+									"      ]",
+									"    },",
+									"    \"isEncryptionEnabled\": {",
+									"      \"type\": \"boolean\"",
+									"    },",
+									"    \"noRewardAlertFlag\": {",
+									"      \"type\": \"boolean\"",
+									"    }",
+									"  },",
+									"  \"required\": [",
+									"    \"resultCode\",",
+									"    \"resultMessage\",",
+									"    \"sessionInformation\",",
+									"    \"passwordTypeChanged\",",
+									"    \"userInformation\",",
+									"    \"redirectionData\",",
+									"    \"redirectionCode\",",
+									"    \"contentHeaderInfo\",",
+									"    \"contentData\",",
+									"    \"isEncryptionEnabled\",",
+									"    \"noRewardAlertFlag\"",
+									"  ]",
+									"};",
+									"",
+									"",
+									"pm.test(\"Validate schema\", () => {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/FetchFirstContentV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"FetchFirstContentV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FetchFirstContent BlankJWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d982c6af-a771-478d-a420-f8f785963d40",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/FetchFirstContent",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"FetchFirstContent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FetchFirstContent Invalid JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b3207dd-e9b3-4ed4-b470-4a4a611843ba",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									"",
+									"console.log(jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "f;sjif@#4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/FetchFirstContent",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"FetchFirstContent"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "SubmitWorksheetQuestion",
+			"item": [
+				{
+					"name": "SubmitWorksheetQuestion",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e9823bca-c2a9-460e-8063-b9c8ac2f23c3",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C001\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"success\");",
+									"",
+									"    });",
+									"    console.log(jsonData);",
+									"/*",
+									"//Schema Validation",
+									"var schema = {",
+									"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"    \"resultCode\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"resultMessage\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"permittedNavs\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"myProgress\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"myTopics\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"worksheets\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"games\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"myMindspark\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"reward\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"myFavourities\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"mailbox\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"myDetails\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"help\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"sparkies\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"home\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"message\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"notification\": {",
+									"          \"type\": \"boolean\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"myProgress\",",
+									"        \"myTopics\",",
+									"        \"worksheets\",",
+									"        \"games\",",
+									"        \"myMindspark\",",
+									"        \"reward\",",
+									"        \"myFavourities\",",
+									"        \"mailbox\",",
+									"        \"myDetails\",",
+									"        \"help\",",
+									"        \"sparkies\",",
+									"        \"home\",",
+									"        \"message\",",
+									"        \"notification\"",
+									"      ]",
+									"    },",
+									"    \"userInformation\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"name\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"avatar\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"section\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"grade\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"gender\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"language\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"isRetail\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"selectedTheme\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"groupID\": {",
+									"          \"type\": \"string\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"name\",",
+									"        \"avatar\",",
+									"        \"section\",",
+									"        \"grade\",",
+									"        \"gender\",",
+									"        \"language\",",
+									"        \"isRetail\",",
+									"        \"selectedTheme\",",
+									"        \"groupID\"",
+									"      ]",
+									"    },",
+									"    \"sessionInformation\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"sessionID\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"sessionStartAt\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"sessionType\": {",
+									"          \"type\": \"string\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"sessionID\",",
+									"        \"sessionStartAt\",",
+									"        \"sessionType\"",
+									"      ]",
+									"    },",
+									"    \"passwordTypeChanged\": {",
+									"      \"type\": \"boolean\"",
+									"    },",
+									"    \"contentHeaderInfo\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"pedagogyID\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"pedagogyType\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"pedagogyStatus\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"pedagogyProgress\": {",
+									"          \"type\": \"object\",",
+									"          \"properties\": {",
+									"            \"currentUnitNum\": {",
+									"              \"type\": \"integer\"",
+									"            },",
+									"            \"totalUnits\": {",
+									"              \"type\": \"integer\"",
+									"            },",
+									"            \"unitList\": {",
+									"              \"type\": \"array\",",
+									"              \"items\": [",
+									"                {",
+									"                  \"type\": \"object\",",
+									"                  \"properties\": {",
+									"                    \"unitID\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitType\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitStatus\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitName\": {",
+									"                      \"type\": \"null\"",
+									"                    },",
+									"                    \"unitSequenceNo\": {",
+									"                      \"type\": \"integer\"",
+									"                    }",
+									"                  },",
+									"                  \"required\": [",
+									"                    \"unitID\",",
+									"                    \"unitType\",",
+									"                    \"unitStatus\",",
+									"                    \"unitName\",",
+									"                    \"unitSequenceNo\"",
+									"                  ]",
+									"                },",
+									"                {",
+									"                  \"type\": \"object\",",
+									"                  \"properties\": {",
+									"                    \"unitID\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitType\": {",
+									"                      \"type\": \"string\"",
+									"                    },",
+									"                    \"unitStatus\": {",
+									"                      \"type\": \"null\"",
+									"                    },",
+									"                    \"unitName\": {",
+									"                      \"type\": \"null\"",
+									"                    },",
+									"                    \"unitSequenceNo\": {",
+									"                      \"type\": \"integer\"",
+									"                    }",
+									"                  },",
+									"                  \"required\": [",
+									"                    \"unitID\",",
+									"                    \"unitType\",",
+									"                    \"unitStatus\",",
+									"                    \"unitName\",",
+									"                    \"unitSequenceNo\"",
+									"                  ]",
+									"                }",
+									"              ]",
+									"            }",
+									"          },",
+									"          \"required\": [",
+									"            \"currentUnitNum\",",
+									"            \"totalUnits\",",
+									"            \"unitList\"",
+									"          ]",
+									"        },",
+									"        \"pedagogyMessages\": {",
+									"          \"type\": \"array\",",
+									"          \"items\": {}",
+									"        },",
+									"        \"pedagogyName\": {",
+									"          \"type\": \"null\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"pedagogyID\",",
+									"        \"pedagogyType\",",
+									"        \"pedagogyStatus\",",
+									"        \"pedagogyProgress\",",
+									"        \"pedagogyMessages\",",
+									"        \"pedagogyName\"",
+									"      ]",
+									"    },",
+									"    \"contentData\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"contentId\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"contentType\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"contentMode\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"contentSubMode\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"contentSeqNum\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"contentParams\": {",
+									"          \"type\": \"object\",",
+									"          \"properties\": {",
+									"            \"userAttemptData\": {",
+									"              \"type\": \"array\",",
+									"              \"items\": {}",
+									"            }",
+									"          },",
+									"          \"required\": [",
+									"            \"userAttemptData\"",
+									"          ]",
+									"        },",
+									"        \"skipQuestion\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"data\": {",
+									"          \"type\": \"array\",",
+									"          \"items\": [",
+									"            {",
+									"              \"type\": \"object\",",
+									"              \"properties\": {",
+									"                \"_id\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"langCode\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"questionBody\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"quesVoiceover\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"response\": {",
+									"                  \"type\": \"object\",",
+									"                  \"properties\": {",
+									"                    \"mcqPattern\": {",
+									"                      \"type\": \"object\",",
+									"                      \"properties\": {",
+									"                        \"type\": {",
+									"                          \"type\": \"string\"",
+									"                        },",
+									"                        \"choices\": {",
+									"                          \"type\": \"array\",",
+									"                          \"items\": [",
+									"                            {",
+									"                              \"type\": \"object\",",
+									"                              \"properties\": {",
+									"                                \"value\": {",
+									"                                  \"type\": \"string\"",
+									"                                },",
+									"                                \"displayAnswer\": {",
+									"                                  \"type\": \"string\"",
+									"                                },",
+									"                                \"correct\": {",
+									"                                  \"type\": \"string\"",
+									"                                },",
+									"                                \"fixed\": {",
+									"                                  \"type\": \"boolean\"",
+									"                                },",
+									"                                \"score\": {",
+									"                                  \"type\": \"integer\"",
+									"                                }",
+									"                              },",
+									"                              \"required\": [",
+									"                                \"value\",",
+									"                                \"displayAnswer\",",
+									"                                \"correct\",",
+									"                                \"fixed\",",
+									"                                \"score\"",
+									"                              ]",
+									"                            }",
+									"                          ]",
+									"                        },",
+									"                        \"optionsVoiceOver\": {",
+									"                          \"type\": \"null\"",
+									"                        },",
+									"                        \"correctAnswer\": {",
+									"                          \"type\": \"string\"",
+									"                        }",
+									"                      },",
+									"                      \"required\": [",
+									"                        \"type\",",
+									"                        \"choices\",",
+									"                        \"optionsVoiceOver\",",
+									"                        \"correctAnswer\"",
+									"                      ]",
+									"                    }",
+									"                  },",
+									"                  \"required\": [",
+									"                    \"mcqPattern\"",
+									"                  ]",
+									"                },",
+									"                \"explanation\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"tags\": {",
+									"                  \"type\": \"array\",",
+									"                  \"items\": [",
+									"                    {",
+									"                      \"type\": \"string\"",
+									"                    }",
+									"                  ]",
+									"                },",
+									"                \"revisionNo\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"isDynamic\": {",
+									"                  \"type\": \"boolean\"",
+									"                },",
+									"                \"contentID\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"template\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"templateFile\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"trials\": {",
+									"                  \"type\": \"integer\"",
+									"                },",
+									"                \"createdAt\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"updatedAt\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"showEditorTool\": {",
+									"                  \"type\": \"integer\"",
+									"                },",
+									"                \"type\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"encrypted\": {",
+									"                  \"type\": \"boolean\"",
+									"                },",
+									"                \"attributes\": {",
+									"                  \"type\": \"array\",",
+									"                  \"items\": {}",
+									"                },",
+									"                \"contentType\": {",
+									"                  \"type\": \"string\"",
+									"                },",
+									"                \"conditions\": {",
+									"                  \"type\": \"array\",",
+									"                  \"items\": {}",
+									"                }",
+									"              },",
+									"              \"required\": [",
+									"                \"_id\",",
+									"                \"langCode\",",
+									"                \"questionBody\",",
+									"                \"quesVoiceover\",",
+									"                \"response\",",
+									"                \"explanation\",",
+									"                \"tags\",",
+									"                \"revisionNo\",",
+									"                \"isDynamic\",",
+									"                \"contentID\",",
+									"                \"template\",",
+									"                \"templateFile\",",
+									"                \"trials\",",
+									"                \"createdAt\",",
+									"                \"updatedAt\",",
+									"                \"showEditorTool\",",
+									"                \"type\",",
+									"                \"encrypted\",",
+									"                \"attributes\",",
+									"                \"contentType\",",
+									"                \"conditions\"",
+									"              ]",
+									"            }",
+									"          ]",
+									"        },",
+									"        \"contentTranslationFlag\": {",
+									"          \"type\": \"boolean\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"contentId\",",
+									"        \"contentType\",",
+									"        \"contentMode\",",
+									"        \"contentSubMode\",",
+									"        \"contentSeqNum\",",
+									"        \"contentParams\",",
+									"        \"skipQuestion\",",
+									"        \"data\",",
+									"        \"contentTranslationFlag\"",
+									"      ]",
+									"    },",
+									"    \"noRewardAlertFlag\": {",
+									"      \"type\": \"boolean\"",
+									"    },",
+									"    \"redirectionCode\": {",
+									"      \"type\": \"null\"",
+									"    },",
+									"    \"redirectionData\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"sessionTimeExceededFlag\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"userTriggered\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"endWorksheetFlag\": {",
+									"          \"type\": \"boolean\"",
+									"        },",
+									"        \"endScreeningTestFlag\": {",
+									"          \"type\": \"boolean\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"sessionTimeExceededFlag\",",
+									"        \"userTriggered\",",
+									"        \"endWorksheetFlag\",",
+									"        \"endScreeningTestFlag\"",
+									"      ]",
+									"    }",
+									"  },",
+									"  \"required\": [",
+									"    \"resultCode\",",
+									"    \"resultMessage\",",
+									"    \"permittedNavs\",",
+									"    \"userInformation\",",
+									"    \"sessionInformation\",",
+									"    \"passwordTypeChanged\",",
+									"    \"contentHeaderInfo\",",
+									"    \"contentData\",",
+									"    \"noRewardAlertFlag\",",
+									"    \"redirectionCode\",",
+									"    \"redirectionData\"",
+									"  ]",
+									"};",
+									"",
+									"pm.test('Schema is valid', function() {",
+									"  pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});",
+									"*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"pedagogyID\": \"{{pedagogyID}}\",\r\n\t\"isDynamic\": false,\r\n\t\"contentID\": \"{{contentId}}\",\r\n\t\"result\": \"cGFzcw==\",\r\n\t\"timeTaken\": 417,\r\n\t\"userResponse\":{\r\n\t\t\"mcqPattern\":{\r\n\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\"userAnswer\": 0\r\n\t\t}\r\n\t},\r\n\t\"userAttemptData\":{ \r\n\t\t\"hintTaken\": false,\r\n\t\t\"trialCount\": 1,\r\n\t\t\"trials\":[ \r\n\t\t\t{\r\n\t\t\t\t\"userResponse\":{ \r\n\t\t\t\t\t\"mcqPattern\":{ \r\n\t\t\t\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\t\t\t\"userAnswer\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"timeTaken\": 417,\r\n\t\t\t\t\t\"result\": \"dHJ1ZQ==\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"contentInfo\":{\r\n\t\t\"contentID\": \"{{contentID}}\",\r\n\t\t\"contentVersionID\": \"{{contentVersionID}}\",\r\n\t\t\"contentType\": \"question\",\r\n\t\t\"questionType\": \"{{langCode}}\",\r\n\t\t\"revisionNum\": \"1\",\r\n\t\t\"langCode\": \"en-IN\"\r\n\t},\r\n\t\"contentSeqNum\": \"{{contentSeqNum}}\",\r\n\t\"remainingTime\": 0\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/SubmitWorksheetQuestionV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"SubmitWorksheetQuestionV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitWorksheetQuestion_Invalid Input",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1c13b97e-c188-42db-b34b-bb9757379131",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"S000\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Input Data Not Valid\");",
+									"   // pm.expect(jsonData.redirectionCode).to.eql(\"CloseScreeningTest\");",
+									"",
+									"    });",
+									"    console.log(jsonData);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"pedagogyID\": \"5cd02c76421aa96a1f007e06\",\r\n\t\"isDynamic\": false,\r\n\t\"contentID\": \"5bd702a790e2352ccc013349\",\r\n\t\"result\": \"cGFzcw==\",\r\n\t\"timeTaken\": 417,\r\n\t\"userResponse\":{\r\n\t\t\"mcqPattern\":{\r\n\t\t\t\"type\": \"MCQ\",\r\n\t\t\t\"userAnswer\": 0\r\n\t\t}\r\n\t},\r\n\t\"userAttemptData\":{ \r\n\t\t\"hintTaken\": false,\r\n\t\t\"trialCount\": 1,\r\n\t\t\"trials\":[ \r\n\t\t\t{\r\n\t\t\t\t\"userResponse\":{ \r\n\t\t\t\t\t\"mcqPattern\":{ \r\n\t\t\t\t\t\t\"type\": \"MCQ\",\r\n\t\t\t\t\t\t\"userAnswer\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"timeTaken\": 417,\r\n\t\t\t\t\t\"result\": \"dHJ1ZQ==\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"contentInfo\":{\r\n\t\t\"contentID\": \"5bd702a790e2352ccc013349\",\r\n\t\t\"contentVersionID\": \"5bd702a790e2352ccc013349_en_1\",\r\n\t\t\"contentType\": \"question\",\r\n\t\t\"questionType\": \"MCQ\",\r\n\t\t\"revisionNum\": \"1\",\r\n\t\t\"langCode\": \"en-IN\"\r\n\t},\r\n\t\"contentSeqNum\": 1,\r\n\t\"remainingTime\": 0,\r\n\t\"nextContentSeqNum\": null  \t\t\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/SubmitWorksheetQuestion",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"SubmitWorksheetQuestion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitWorksheetQuestion_InvalidpedagogyID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "efd3f989-fb43-4115-8e38-bcdaeef531df",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"S000\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Input Data Not Valid\");",
+									"});",
+									"",
+									"console.log(jsonData);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"pedagogyID\": \"sdifj^%sdnb54\",\r\n\t\"isDynamic\": false,\r\n\t\"contentID\": \"{{contentId}}\",\r\n\t\"result\": \"cGFzcw==\",\r\n\t\"timeTaken\": 417,\r\n\t\"userResponse\":{\r\n\t\t\"mcqPattern\":{\r\n\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\"userAnswer\": 0\r\n\t\t}\r\n\t},\r\n\t\"userAttemptData\":{ \r\n\t\t\"hintTaken\": false,\r\n\t\t\"trialCount\": 1,\r\n\t\t\"trials\":[ \r\n\t\t\t{\r\n\t\t\t\t\"userResponse\":{ \r\n\t\t\t\t\t\"mcqPattern\":{ \r\n\t\t\t\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\t\t\t\"userAnswer\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"timeTaken\": 417,\r\n\t\t\t\t\t\"result\": \"dHJ1ZQ==\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"contentInfo\":{\r\n\t\t\"contentID\": \"{{contentID}}\",\r\n\t\t\"contentVersionID\": \"{{contentVersionID}}\",\r\n\t\t\"contentType\": \"question\",\r\n\t\t\"questionType\": \"{{langCode}}\",\r\n\t\t\"revisionNum\": \"1\",\r\n\t\t\"langCode\": \"en-IN\"\r\n\t},\r\n\t\"contentSeqNum\": \"{{contentSeqNum}}\",\r\n\t\"remainingTime\": 0\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/SubmitWorksheetQuestionV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"SubmitWorksheetQuestionV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitWorksheetQuestion_BlankpedagogyID Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3bfdef0b-b5e1-424e-821a-f6f2f9748c90",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C001\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"success\");",
+									"    pm.expect(jsonData.error[0]).to.eql(\"contentID not matching with tailID\");",
+									"",
+									"",
+									"});",
+									"",
+									"console.log(jsonData);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"pedagogyID\": \"\",\r\n\t\"isDynamic\": false,\r\n\t\"contentID\": \"{{contentId}}\",\r\n\t\"result\": \"cGFzcw==\",\r\n\t\"timeTaken\": 417,\r\n\t\"userResponse\":{\r\n\t\t\"mcqPattern\":{\r\n\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\"userAnswer\": 0\r\n\t\t}\r\n\t},\r\n\t\"userAttemptData\":{ \r\n\t\t\"hintTaken\": false,\r\n\t\t\"trialCount\": 1,\r\n\t\t\"trials\":[ \r\n\t\t\t{\r\n\t\t\t\t\"userResponse\":{ \r\n\t\t\t\t\t\"mcqPattern\":{ \r\n\t\t\t\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\t\t\t\"userAnswer\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"timeTaken\": 417,\r\n\t\t\t\t\t\"result\": \"dHJ1ZQ==\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"contentInfo\":{\r\n\t\t\"contentID\": \"{{contentID}}\",\r\n\t\t\"contentVersionID\": \"{{contentVersionID}}\",\r\n\t\t\"contentType\": \"question\",\r\n\t\t\"questionType\": \"{{langCode}}\",\r\n\t\t\"revisionNum\": \"1\",\r\n\t\t\"langCode\": \"en-IN\"\r\n\t},\r\n\t\"contentSeqNum\": \"{{contentSeqNum}}\",\r\n\t\"remainingTime\": 0\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/SubmitWorksheetQuestionV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"SubmitWorksheetQuestionV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitWorksheetQuestion_InvalidcontentID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6e439cb5-581b-45e3-830e-28a3972f7db6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C004\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"redirect\");",
+									"",
+									"    });",
+									"    ",
+									"    console.log(jsonData);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"pedagogyID\": \"{{pedagogyID}}\",\r\n\t\"isDynamic\": false,\r\n\t\"contentID\": \"djgf&^354\",\r\n\t\"result\": \"cGFzcw==\",\r\n\t\"timeTaken\": 417,\r\n\t\"userResponse\":{\r\n\t\t\"mcqPattern\":{\r\n\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\"userAnswer\": 0\r\n\t\t}\r\n\t},\r\n\t\"userAttemptData\":{ \r\n\t\t\"hintTaken\": false,\r\n\t\t\"trialCount\": 1,\r\n\t\t\"trials\":[ \r\n\t\t\t{\r\n\t\t\t\t\"userResponse\":{ \r\n\t\t\t\t\t\"mcqPattern\":{ \r\n\t\t\t\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\t\t\t\"userAnswer\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"timeTaken\": 417,\r\n\t\t\t\t\t\"result\": \"dHJ1ZQ==\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"contentInfo\":{\r\n\t\t\"contentID\": \"djgf&^354\",\r\n\t\t\"contentVersionID\": \"{{contentVersionID}}\",\r\n\t\t\"contentType\": \"question\",\r\n\t\t\"questionType\": \"{{langCode}}\",\r\n\t\t\"revisionNum\": \"1\",\r\n\t\t\"langCode\": \"en-IN\"\r\n\t},\r\n\t\"contentSeqNum\": \"{{contentSeqNum}}\",\r\n\t\"remainingTime\": 0\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/SubmitWorksheetQuestionV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"SubmitWorksheetQuestionV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitWorksheetQuestion_BlankcontentID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1835be2e-b30c-4851-82d6-5c75b9a6256e",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.data.contentID).to.eql(\"This field should not be empty.\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");",
+									"    });",
+									"    console.log(jsonData);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"pedagogyID\": \"{{pedagogyID}}\",\r\n\t\"isDynamic\": false,\r\n\t\"contentID\": \"\",\r\n\t\"result\": \"cGFzcw==\",\r\n\t\"timeTaken\": 417,\r\n\t\"userResponse\":{\r\n\t\t\"mcqPattern\":{\r\n\t\t\t\"type\": \"MCQ\",\r\n\t\t\t\"userAnswer\": 0\r\n\t\t}\r\n\t},\r\n\t\"userAttemptData\":{ \r\n\t\t\"hintTaken\": false,\r\n\t\t\"trialCount\": 1,\r\n\t\t\"trials\":[ \r\n\t\t\t{\r\n\t\t\t\t\"userResponse\":{ \r\n\t\t\t\t\t\"mcqPattern\":{ \r\n\t\t\t\t\t\t\"type\": \"MCQ\",\r\n\t\t\t\t\t\t\"userAnswer\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"timeTaken\": 417,\r\n\t\t\t\t\t\"result\": \"dHJ1ZQ==\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"contentInfo\":{\r\n\t\t\"contentID\": \"\",\r\n\t\t\"contentVersionID\": \"{{contentVersionID}}\",\r\n\t\t\"contentType\": \"question\",\r\n\t\t\"questionType\": \"MCQ\",\r\n\t\t\"revisionNum\": \"1\",\r\n\t\t\"langCode\": \"en-IN\"\r\n\t},\r\n\t\"contentSeqNum\": 1,\r\n\t\"remainingTime\": 0,\r\n\t\"nextContentSeqNum\": null  \t\t\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/SubmitWorksheetQuestion",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"SubmitWorksheetQuestion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitWorksheetQuestion_BlankcontentVersionID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2c678e16-3aca-4e06-a8c1-4f4455bd8dba",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C004\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"redirect\");",
+									"",
+									"    });",
+									"    ",
+									"    console.log(jsonData);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"pedagogyID\": \"{{pedagogyID}}\",\r\n\t\"isDynamic\": false,\r\n\t\"contentID\": \"{{contentId}}\",\r\n\t\"result\": \"cGFzcw==\",\r\n\t\"timeTaken\": 417,\r\n\t\"userResponse\":{\r\n\t\t\"mcqPattern\":{\r\n\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\"userAnswer\": 0\r\n\t\t}\r\n\t},\r\n\t\"userAttemptData\":{ \r\n\t\t\"hintTaken\": false,\r\n\t\t\"trialCount\": 1,\r\n\t\t\"trials\":[ \r\n\t\t\t{\r\n\t\t\t\t\"userResponse\":{ \r\n\t\t\t\t\t\"mcqPattern\":{ \r\n\t\t\t\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\t\t\t\"userAnswer\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"timeTaken\": 417,\r\n\t\t\t\t\t\"result\": \"dHJ1ZQ==\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"contentInfo\":{\r\n\t\t\"contentID\": \"{{contentID}}\",\r\n\t\t\"contentVersionID\": \"\",\r\n\t\t\"contentType\": \"question\",\r\n\t\t\"questionType\": \"{{langCode}}\",\r\n\t\t\"revisionNum\": \"1\",\r\n\t\t\"langCode\": \"en-IN\"\r\n\t},\r\n\t\"contentSeqNum\": \"{{contentSeqNum}}\",\r\n\t\"remainingTime\": 0\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/SubmitWorksheetQuestionV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"SubmitWorksheetQuestionV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitWorksheetQuestion_InvalidcontentVersionID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17b2fb13-84d3-4e7d-99ef-24792c5b29cc",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C004\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"redirect\");",
+									"",
+									"    });",
+									"    ",
+									"    console.log(jsonData);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"pedagogyID\": \"{{pedagogyID}}\",\r\n\t\"isDynamic\": false,\r\n\t\"contentID\": \"{{contentId}}\",\r\n\t\"result\": \"cGFzcw==\",\r\n\t\"timeTaken\": 417,\r\n\t\"userResponse\":{\r\n\t\t\"mcqPattern\":{\r\n\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\"userAnswer\": 0\r\n\t\t}\r\n\t},\r\n\t\"userAttemptData\":{ \r\n\t\t\"hintTaken\": false,\r\n\t\t\"trialCount\": 1,\r\n\t\t\"trials\":[ \r\n\t\t\t{\r\n\t\t\t\t\"userResponse\":{ \r\n\t\t\t\t\t\"mcqPattern\":{ \r\n\t\t\t\t\t\t\"type\": \"{{langCode}}\",\r\n\t\t\t\t\t\t\"userAnswer\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"timeTaken\": 417,\r\n\t\t\t\t\t\"result\": \"dHJ1ZQ==\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"contentInfo\":{\r\n\t\t\"contentID\": \"{{contentID}}\",\r\n\t\t\"contentVersionID\": \"sdhv&^54\",\r\n\t\t\"contentType\": \"question\",\r\n\t\t\"questionType\": \"{{langCode}}\",\r\n\t\t\"revisionNum\": \"1\",\r\n\t\t\"langCode\": \"en-IN\"\r\n\t},\r\n\t\"contentSeqNum\": \"{{contentSeqNum}}\",\r\n\t\"remainingTime\": 0\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/SubmitWorksheetQuestionV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"SubmitWorksheetQuestionV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitWorksheetQuestion_InvalidJWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1b0b9dfd-3c60-449a-9280-f001913cf541",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									"",
+									"console.log(jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": ".skjdhf34"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"pedagogyID\": \"{{pedagogyID}}\",\r\n\t\"isDynamic\": false,\r\n\t\"contentID\": \"{{contentId}}\",\r\n\t\"result\": \"cGFzcw==\",\r\n\t\"timeTaken\": 417,\r\n\t\"userResponse\":{\r\n\t\t\"mcqPattern\":{\r\n\t\t\t\"type\": \"MCQ\",\r\n\t\t\t\"userAnswer\": 0\r\n\t\t}\r\n\t},\r\n\t\"userAttemptData\":{ \r\n\t\t\"hintTaken\": false,\r\n\t\t\"trialCount\": 1,\r\n\t\t\"trials\":[ \r\n\t\t\t{\r\n\t\t\t\t\"userResponse\":{ \r\n\t\t\t\t\t\"mcqPattern\":{ \r\n\t\t\t\t\t\t\"type\": \"MCQ\",\r\n\t\t\t\t\t\t\"userAnswer\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"timeTaken\": 417,\r\n\t\t\t\t\t\"result\": \"dHJ1ZQ==\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"contentInfo\":{\r\n\t\t\"contentID\": \"{{contentID}}\",\r\n\t\t\"contentVersionID\": \"{{contentVersionID}}\",\r\n\t\t\"contentType\": \"question\",\r\n\t\t\"questionType\": \"MCQ\",\r\n\t\t\"revisionNum\": \"1\",\r\n\t\t\"langCode\": \"en-IN\"\r\n\t},\r\n\t\"contentSeqNum\": 1,\r\n\t\"remainingTime\": 0,\r\n\t\"nextContentSeqNum\": null  \t\t\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/SubmitWorksheetQuestion",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"SubmitWorksheetQuestion"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SubmitWorksheetQuestion_BlankJWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ea70198a-ec79-4009-b17d-5029d4358f2e",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									"console.log(jsonData);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"pedagogyID\": \"{{pedagogyID}}\",\r\n\t\"isDynamic\": false,\r\n\t\"contentID\": \"{{contentId}}\",\r\n\t\"result\": \"cGFzcw==\",\r\n\t\"timeTaken\": 417,\r\n\t\"userResponse\":{\r\n\t\t\"mcqPattern\":{\r\n\t\t\t\"type\": \"MCQ\",\r\n\t\t\t\"userAnswer\": 0\r\n\t\t}\r\n\t},\r\n\t\"userAttemptData\":{ \r\n\t\t\"hintTaken\": false,\r\n\t\t\"trialCount\": 1,\r\n\t\t\"trials\":[ \r\n\t\t\t{\r\n\t\t\t\t\"userResponse\":{ \r\n\t\t\t\t\t\"mcqPattern\":{ \r\n\t\t\t\t\t\t\"type\": \"MCQ\",\r\n\t\t\t\t\t\t\"userAnswer\": 0\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"timeTaken\": 417,\r\n\t\t\t\t\t\"result\": \"dHJ1ZQ==\"\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t]\r\n\t},\r\n\t\"contentInfo\":{\r\n\t\t\"contentID\": \"{{contentID}}\",\r\n\t\t\"contentVersionID\": \"{{contentVersionID}}\",\r\n\t\t\"contentType\": \"question\",\r\n\t\t\"questionType\": \"MCQ\",\r\n\t\t\"revisionNum\": \"1\",\r\n\t\t\"langCode\": \"en-IN\"\r\n\t},\r\n\t\"contentSeqNum\": 1,\r\n\t\"remainingTime\": 0,\r\n\t\"nextContentSeqNum\": null  \t\t\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/SubmitWorksheetQuestion",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"SubmitWorksheetQuestion"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GetScreeningTestReport",
+			"item": [
+				{
+					"name": "GetScreeningTestReport",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a0bc1b9c-a69d-43e3-b6ab-6d875e100185",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C001\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"success\");",
+									"",
+									"    });",
+									"    ",
+									"    console.log(jsonData);",
+									"",
+									"//Schema Validation",
+									"var schema = {",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"    \"resultCode\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"resultMessage\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"sessionReport\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"screeningTestID\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"screeningTestStatus\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"questionsAttempted\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"questionsCorrect\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"questionsWrong\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"questionsSkipped\": {",
+									"          \"type\": \"integer\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"screeningTestID\",",
+									"        \"screeningTestStatus\",",
+									"        \"questionsAttempted\",",
+									"        \"questionsCorrect\",",
+									"        \"questionsWrong\",",
+									"        \"questionsSkipped\"",
+									"      ]",
+									"    }",
+									"  },",
+									"  \"required\": [",
+									"    \"resultCode\",",
+									"    \"resultMessage\",",
+									"    \"sessionReport\"",
+									"  ]",
+									"};",
+									"",
+									"pm.test('Schema is valid', function() {",
+									"  pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"{{pedagogyID}}\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/GetScreeningTestReport",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"GetScreeningTestReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetScreeningTestReport ReportNotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f7b0c1ef-cefe-4f0d-be6c-729ef7deddd7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"S035\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Screening Test details not found\");",
+									"",
+									"    });",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"5cd00e26421aa95f335d3c73\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/GetScreeningTestReport",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"GetScreeningTestReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetScreeningTestReport InvalidScreenID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ac14a80-715a-49df-8234-811e9da60e74",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.data.screeningTestID).to.eql(\"This field is required.\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");",
+									"",
+									"    });",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"sjef%$#54\r\n\t\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/GetScreeningTestReport",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"GetScreeningTestReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetScreeningTestReport BlankScreenID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dabe7283-41bd-4ebb-9304-ff9af4496de1",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.data.screeningTestID).to.eql(\"This field should not be empty.\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");",
+									"",
+									"    });",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/GetScreeningTestReport",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"GetScreeningTestReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetScreeningTestReport BlankJWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "68d1e13e-94d4-4d66-8970-b04661aa0d9b",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"{{pedagogyID}}\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/GetScreeningTestReport",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"GetScreeningTestReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetScreeningTestReport InvalidJWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b8bf172c-c6b5-4c4a-b048-aa69cc6edeb6",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "skljdfh65#34",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"screeningTestID\": \"{{pedagogyID}}\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/GetScreeningTestReport",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"GetScreeningTestReport"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "QuitWorksheetV3",
+			"item": [
+				{
+					"name": "QuitWorksheetV3 - Valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "06fa9a9a-f782-46ca-847b-0904a5612632",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C004\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"redirect\");",
+									"",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"worksheetID\": \"{{pedagogyID}}\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/QuitWorksheetV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"QuitWorksheetV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "QuitWorksheetV3 - BlankWorksheetID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "add91eda-ce6f-40ef-8ef8-a9bf73c3c010",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.data.worksheetID).to.eql(\"This field should not be empty.\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");",
+									"    ",
+									"    });",
+									"    ",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"worksheetID\": \"\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/QuitWorksheetV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"QuitWorksheetV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "QuitWorksheetV3 - InvalidWorksheetID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6655345a-1be2-4480-a105-debb14ad0a17",
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {",
+									"    pm.response.to.have.status(500);",
+									"});",
+									"// test",
+									"/*",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.data.worksheetID).to.eql(\"This field should not be empty.\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");",
+									"",
+									"});",
+									"",
+									"*/",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"worksheetID\": \"ejrh\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/QuitWorksheetV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"QuitWorksheetV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FetchFirstContent BlankJWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fb9222b9-b634-4cfe-a9ba-c70f49e55d21",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "{{token}}",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"worksheetID\": \"5e672aeef8dc1b853795f0a2\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/QuitWorksheetV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"QuitWorksheetV3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FetchFirstContent Invalid JWT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "485531b6-1751-44c9-bf5e-1257e50c9ba1",
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.result).to.eql(\"failure\");",
+									"    pm.expect(jsonData.msg).to.eql(\"Invalid Header\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "jwt",
+								"type": "text",
+								"value": "f;sjif@#4"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"worksheetID\": \"5e672aeef8dc1b853795f0a2\"\r\n}\r\n",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/Student/QuitWorksheetV3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"Student",
+								"QuitWorksheetV3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ValidatePassword",
+			"item": [
+				{
+					"name": "ValidatePassword_multipleSubs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "80803346-d884-4f62-838c-b6b62d991e8d",
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"   let responseheaders=pm.response.headers.get('JWT');\r",
+									"   console.log(responseheaders);\r",
+									"  // pm.environment.set(\"token\",responseheaders);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C004\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"redirect\");\r",
+									"\r",
+									"    });\r",
+									"\r",
+									"//Schema Validation\r",
+									"var schema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"resultCode\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"resultMessage\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"redirectionCode\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"redirectionData\": {\r",
+									"      \"type\": \"object\",\r",
+									"      \"properties\": {\r",
+									"        \"productList\": {\r",
+									"          \"type\": \"array\",\r",
+									"          \"items\": [\r",
+									"            {\r",
+									"              \"type\": \"object\",\r",
+									"              \"properties\": {\r",
+									"                \"name\": {\r",
+									"                  \"type\": \"string\"\r",
+									"                },\r",
+									"                \"active\": {\r",
+									"                  \"type\": \"boolean\"\r",
+									"                }\r",
+									"              },\r",
+									"              \"required\": [\r",
+									"                \"name\",\r",
+									"                \"active\"\r",
+									"              ]\r",
+									"            },\r",
+									"            {\r",
+									"              \"type\": \"object\",\r",
+									"              \"properties\": {\r",
+									"                \"name\": {\r",
+									"                  \"type\": \"string\"\r",
+									"                },\r",
+									"                \"active\": {\r",
+									"                  \"type\": \"boolean\"\r",
+									"                }\r",
+									"              },\r",
+									"              \"required\": [\r",
+									"                \"name\",\r",
+									"                \"active\"\r",
+									"              ]\r",
+									"            }\r",
+									"          ]\r",
+									"        },\r",
+									"        \"firstName\": {\r",
+									"          \"type\": \"string\"\r",
+									"        },\r",
+									"        \"lastName\": {\r",
+									"          \"type\": \"string\"\r",
+									"        }\r",
+									"      },\r",
+									"      \"required\": [\r",
+									"        \"productList\",\r",
+									"        \"firstName\",\r",
+									"        \"lastName\"\r",
+									"      ]\r",
+									"    },\r",
+									"    \"today\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"firstName\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"lastName\": {\r",
+									"      \"type\": \"string\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"resultCode\",\r",
+									"    \"resultMessage\",\r",
+									"    \"redirectionCode\",\r",
+									"    \"redirectionData\",\r",
+									"    \"today\",\r",
+									"    \"firstName\",\r",
+									"    \"lastName\"\r",
+									"  ]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"Validate schema\", () => {\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"/*\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+									"});\r",
+									"*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"demouser.eighteen\",\r\n\"passwordType\": \"text\",\r\n\"password\": \"demouser.eighteen\"\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/CommonLogin/ValidatePasswordV3/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"CommonLogin",
+								"ValidatePasswordV3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ValidatePassword_SingleSubs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c2002bed-edac-4bce-a2bc-65c441884b12",
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"   let responseheaders=pm.response.headers.get('JWT');\r",
+									"   console.log(responseheaders);\r",
+									"  // pm.environment.set(\"token\",responseheaders);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C004\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"redirect\");\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"demouser.twelve\",\r\n\"passwordType\": \"picture\",\r\n\"password\": \"aimg1|bimg1|cimg1\"\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/CommonLogin/ValidatePassword",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"CommonLogin",
+								"ValidatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ValidatePassword_Invalid Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4f999a2f-5182-4ae3-8186-44c856281809",
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"CL001\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"password mismatch\");\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"aman.lower45_rearch\",\r\n\"passwordType\": \"text\",\r\n\"password\": \"jhef12\"\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/CommonLogin/ValidatePassword",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"CommonLogin",
+								"ValidatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ValidatePassword_Blank Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c3cd65d5-37f0-4556-b23b-9ebfe6c68406",
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.data.password).to.eql(\"This field should not be empty.\");\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"aman.lower45_rearch\",\r\n\"passwordType\": \"text\",\r\n\"password\": \"\"\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/CommonLogin/ValidatePassword",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"CommonLogin",
+								"ValidatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ValidatePassword_Blank Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5d909530-8e9c-4560-b98e-de80e10b2fe4",
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    pm.expect(jsonData.data.username).to.eql(\"This field should not be empty.\");\r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"\",\r\n\"passwordType\": \"text\",\r\n\"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/CommonLogin/ValidatePassword",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"CommonLogin",
+								"ValidatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ValidatePassword_Invalid Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8a5014fd-9fff-4f81-8af0-f816f27ec64c",
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"// test\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    \r",
+									"    pm.expect(jsonData.resultCode).to.eql(\"CL002\");\r",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Username incorrect! Try again!\");\r",
+									"\r",
+									"    });"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"w2\",\r\n\"passwordType\": \"text\",\r\n\"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/CommonLogin/ValidatePassword",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"CommonLogin",
+								"ValidatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ValidatePassword_Blank Passwordtype",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cc858db1-cc0a-435f-8549-f712f95f9673",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.data.passwordType).to.eql(\"This field should not be empty.\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"demo.sun1_rearch\",\r\n\"passwordType\": \"\",\r\n\"password\": \"aimg1|bimg1\"\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/CommonLogin/ValidatePasswordV3/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"CommonLogin",
+								"ValidatePasswordV3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ValidatePassword_Invalid Passwordtype",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bf88e0ca-c7a6-406e-8493-caa59d26b9ad",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"// test",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Your test name\", function () {",
+									"    pm.expect(jsonData.data.passwordType).to.eql(\"Please enter any value (text,picture,no)\");",
+									"    pm.expect(jsonData.resultCode).to.eql(\"C900\");",
+									"    pm.expect(jsonData.resultMessage).to.eql(\"Parameter not matching min requirement, Please check\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"aman.lower45_rearch\",\r\n\"passwordType\": \"gn44\",\r\n\"password\": \"12345\"\r\n}",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/CommonLogin/ValidatePasswordV3/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"CommonLogin",
+								"ValidatePasswordV3",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
